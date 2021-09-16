@@ -1,3 +1,8 @@
+/**
+ *
+ * @author Twisted
+ */
+
 function myAll(params) {
   if (params === []) {
     return new Promise.resolve([]);

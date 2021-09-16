@@ -6,6 +6,8 @@ function myNew() {
   return typeof res === Object ? res || temp : temp;
 }
 
+// --------------------------------------test----------------------------------------------
+
 function Twisted(age, name) {
   this.age = age;
   this.name = name;
