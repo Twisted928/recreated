@@ -1,6 +1,5 @@
 /**
- *
- * 如果你持续触发事件，每隔一段时间，只执行一次事件。
+ * 如果持续触发事件，每隔一段时间，只执行一次事件。
  * @author Twisted
  */
 export function myThrottle(func, wait) {
@@ -15,7 +14,6 @@ export function myThrottle(func, wait) {
 
     if (resTime <= 0 || resTime > wait) {
       if (timer) {
-        console.log("hasTimer");
         clearTimeout(timer);
         timer = null;
       }
@@ -25,7 +23,6 @@ export function myThrottle(func, wait) {
       timer = setTimeout(function () {
         timeBefore = +new Date();
         func.apply(_this, args);
-        timer = null;
       }, resTime);
     }
   };
