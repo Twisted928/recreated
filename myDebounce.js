@@ -10,11 +10,13 @@ export function myDebounce(func, wait) {
   return function () {
     if (timer) {
       clearTimeout(timer);
+      timer = null;
     }
     const _this = this;
     const args = arguments;
     timer = setTimeout(function () {
       func.apply(_this, args);
+      timer = null;
     }, wait);
   };
 }

@@ -3,27 +3,23 @@
  * @author Twisted
  */
 export function myThrottle(func, wait) {
-  console.log("init");
-  let timer;
-  let timeBefore = 0;
-  return function () {
-    let _this;
-    let args;
-    const timeNow = +new Date();
-    const resTime = wait - (timeNow - timeBefore);
+  let lastTime = null;
+  let timer = null;
+  let nowTime = +new Date(); // JS中在元素前使用'+'号将该元素转换成Number类型，如果转换失败，得到NaN
+  if (timer) {
+    clearTimeout(timer);
+    timer = null;
+  }
 
-    if (resTime <= 0 || resTime > wait) {
-      if (timer) {
-        clearTimeout(timer);
-        timer = null;
-      }
-      timeBefore = timeNow;
-      func.apply(_this, args);
-    } else if (!timer) {
-      timer = setTimeout(function () {
-        timeBefore = +new Date();
-        func.apply(_this, args);
-      }, resTime);
-    }
-  };
+  const remainTime = wait - (nowTime - lastTime);
+
+  if (remainTime <= 0) {
+    lastTime = nowTime;
+    func.apply(this, arguments);
+  } else {
+    timer = setTimeout(() => {
+      lastTime = +new Date();
+      func.apply(this, arguments);
+    }, remainTime);
+  }
 }
