@@ -1,24 +1,17 @@
+/**
+ * plain object 无格式对象(普通对象),通过对象字面量或者new Object()创建的对象
+ * @author redux
+ */
+
 function myIsPlainObj(obj: any): boolean {
-  if (
-    !obj ||
-    typeof obj !== "object" ||
-    {}.toString.call(obj) !== "[object Object]"
-  ) {
+  if (obj === null || obj === undefined || typeof obj !== "object") {
     return false;
   }
 
-  const protoTemp = Object.getPrototypeOf(obj);
-
-  if (protoTemp === null) {
-    return true; // 字面量创建:{} or Object.create()
+  let proto = obj;
+  while (Object.getPrototypeOf(proto) !== null) {
+    proto = Object.getPrototypeOf(proto);
   }
-
-  const Ctor =
-    protoTemp.constructor && {}.hasOwnProperty.call(protoTemp, "constructor");
-  return (
-    typeof Ctor === "function" &&
-    Ctor instanceof Ctor &&
-    Function.prototype.toString.call(Ctor) ===
-      Function.prototype.toString.call(Object)
-  );
+  // 判断obj的prototype是否为Object
+  return Object.getPrototypeOf(obj) === proto;
 }
