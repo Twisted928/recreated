@@ -3,8 +3,8 @@
  * @author Twisted
  */
 
-function myAll(params) {
-  if (params === []) {
+function myPromiseAll(params) {
+  if (Array.isArray(params) && params.length === 0) {
     return new Promise.resolve([]);
   }
 
@@ -15,28 +15,29 @@ function myAll(params) {
     return new Promise.reject({});
   }
 
-  let result = [];
+  let result = new Array(params.length);
   let resolveCount = 0;
   return new Promise(function (resolve, reject) {
     for (let i = 0; i < params.length; i++) {
       const element = params[i];
       if (
+        element !== null &&
         element.then &&
         typeof element === "object" &&
         typeof element.then === "function"
       ) {
-        element.then(
-          (res) => {
+        element
+          .then((res) => {
             resolveCount += 1;
             result[i] = res;
             if (resolveCount === params.length) {
               resolve(result);
             }
-          },
-          (err) => {
+          })
+          .catch((err) => {
             reject(err);
-          }
-        );
+            return;
+          });
       } else {
         resolveCount += 1;
         result[i] = element;
@@ -50,18 +51,17 @@ function myAll(params) {
 
 // ----------------------------test---------------------------------------------
 
-const promise1 = new Promise(function (resolve, reject) {
+const promise1 = new Promise(function (resolve) {
   resolve(1);
 });
 const promise2 = new Promise(function (resolve) {
   resolve(2);
 });
-const promise3 = new Promise(function (resolve) {
+const promise3 = new Promise(function (resolve, reject) {
   resolve(3);
 });
 
-const promiseAll = myAll(1);
-// const promiseAll = myAll([promise1, promise2, promise3, 4]);
+const promiseAll = myPromiseAll([promise1, promise2, promise3, { a: "1" }]);
 
 promiseAll.then(
   (res) => {

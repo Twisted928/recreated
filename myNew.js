@@ -1,9 +1,9 @@
 function myNew() {
   const temp = Object.create(null);
-  const constructorTemp = Array.prototype.shift.call(arguments);
-  Object.setPrototypeOf(temp, constructorTemp.prototype);
-  const res = constructorTemp.apply(temp, arguments);
-  return typeof res === Object ? res || temp : temp;
+  const prototypeTemp = Array.prototype.shift.call(arguments);
+  Object.setPrototypeOf(temp, prototypeTemp.prototype);
+  const res = prototypeTemp.apply(temp, arguments);
+  return typeof res === Object ? res : temp;
 }
 
 // --------------------------------------test----------------------------------------------
