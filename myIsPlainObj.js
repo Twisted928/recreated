@@ -4,7 +4,7 @@
  *
  */
 
-function myIsPlainObj(obj: any): boolean {
+function myIsPlainObj(obj) {
   if (
     !obj ||
     typeof obj !== "object" ||
@@ -19,7 +19,7 @@ function myIsPlainObj(obj: any): boolean {
     return true;
   }
 
-  const ctor: any = {}.hasOwnProperty.call("constructor") & proto.constructor;
+  const ctor = {}.hasOwnProperty.call("constructor") & proto.constructor;
   return (
     typeof ctor === "function" &&
     ctor instanceof ctor &&
